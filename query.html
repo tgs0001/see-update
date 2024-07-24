@@ -1,0 +1,159 @@
+{% extends "employees/home.html" %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Query</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+
+    <!-- Custom Styles -->
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: #7abecc;
+            color: #333; /* Text color */
+        }
+        .btn-red {
+            background-color: #7393B3 !important; /* !important ensures that the style is applied */
+        }
+        .user_card {
+            width: 550px;
+            margin: auto;
+            margin-top: 20px;
+            background: #f8f9fa; /* Light gray background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #form-title {
+            background-color: #7393B3; /* Background color for title */
+            color: #fff; /* White text color */
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .form-container {
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .form-row label {
+            width: 180px;
+            text-align: right;
+            margin-right: 10px;
+            color: #000; /* Black label text color */
+        }
+        .form-row textarea,
+        .form-row input {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333; /* Text color for inputs */
+            background-color: #fff; /* White background for inputs */
+        }
+        .login-btn {
+            width: 40%;
+            background: #000; /* Black button */
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            margin-top: 10px;
+        }
+        .login-btn:focus {
+            box-shadow: none;
+            outline: none;
+        }
+        /* Custom styles for the "Remark" select */
+        #remark {
+            text-align: center; /* Center text */
+        }
+        /* Styles for the message */
+        .message {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid h-100">
+        <div class="row justify-content-center h-100">
+            <div class="col-lg-6">
+                <div class="user_card">
+                    <h3 id="form-title">Report Query</h3>
+                    <form action="{% url 'query' %}" method="post" class="form-container">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="employee">Employee Name:</label>
+                            <select name="employee" id="employee" class="form-control" required>
+                                <option value="">Select Employee</option>
+                                {% for emp in employeeData %}
+                                <option value="{{ emp.empid }}">[{{emp.enothi_id}}] - {{ emp.ename }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="evalBased">Evaluated by:</label>
+                            <div>
+                                <input type="radio" id="secDept" name="evalBased" value="secDept">
+                                <label for="secDept">Same Section or Same Department</label><br>
+                                <input type="radio" id="everyone" name="evalBased" value="everyone">
+                                <label for="everyone">Everyone</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-dark login-btn btn-red" value="Make Report">
+                            {% if messages %}
+                            <div class="message">
+                                {% for message in messages %}
+                                <p>{{ message }}</p>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Your custom script -->
+    <script>
+        function myFunction() {
+            alert(document.getElementById("employee").value);
+        }
+    </script>
+</body>
+</html>
+
+{% endblock %}

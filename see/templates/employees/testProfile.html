@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Data</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#id_employees').change(function() {
+                var selectedName = $(this).val();
+                $.ajax({
+                    type: 'GET',
+                   
+                    data: {
+                        'employee_name': selectedName
+                    },
+                    success: function(response) {
+
+                        $('#id_name').val(response.name);
+                        $('#id_designation').val(response.designation);
+                        $('#id_division').val(response.division);
+                        $('#id_empid').val(response.empid);
+                        
+                    },
+                    error: function(xhr, errmsg, err) {
+                        console.log(errmsg);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        
+		<select name="id_employees" id="id_employees" required>
+			<option selected disabled="true"> Select Employee </option>
+			{% for emp in employees_data %}
+			<option>[{{emp.ID}}] - {{emp.Name}}</option><br>
+			{% endfor %}
+		</select>
+
+		{{ form.as_p }}
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
